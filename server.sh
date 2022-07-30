@@ -2,7 +2,8 @@
 
 if [ -z "$PORT"]
 then
-  PORT=5005
+  PORT=5055
 fi
 
-rasa run --enable-api --port $PORT
+# rasa run --enable-api --port $PORT
+rasa run actions
