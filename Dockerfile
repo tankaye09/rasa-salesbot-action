@@ -9,5 +9,4 @@ USER 1001
 EXPOSE 5055
 
 # RUN rasa train nlu
-
-ENTRYPOINT ["/app/server.sh"]
+CMD rasa run actions -p process.env.PORT
