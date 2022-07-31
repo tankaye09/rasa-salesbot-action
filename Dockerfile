@@ -8,8 +8,10 @@ COPY server.sh /app/server.sh
 USER root
 RUN chmod -R 777 /app
 USER 1001
-EXPOSE 5055
 
 # RUN rasa train nlu
+# CMD [ "run","actions","-p",process.env.PORT, "--debug"]
+# CMD [ "run","actions","--debug"]
+# CMD ["start","--actions","actions","-p","$PORT"]
 
-# ENTRYPOINT ["/app/server.sh"]
+ENTRYPOINT ["/app/server.sh"]
