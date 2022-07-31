@@ -6,4 +6,5 @@ then
 fi
 
 # rasa run --enable-api --port $PORT
-start --actions actions -p $PORT
+# rasa run actions -p $PORT
+python -m rasa_sdk --actions actions -p $PORT
