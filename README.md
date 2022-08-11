@@ -3,7 +3,7 @@
 ### Introduction
 A chatbot hosted on Facebook that approaches customers with interactive features that encourages engagement between the brand and customers through providing assistance to customers’ queries and promoting awareness of the benefits of insurance, thereby leaving a memorable brand image on customers.
 
-This is the README.md file for our [Rasa Action Server](https://rasa.com/docs/) component. 
+This is the README.md file for our [Rasa Action Server](https://rasa.com/docs/action-server/) component. 
 
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
@@ -15,9 +15,14 @@ This is the README.md file for our [Rasa Action Server](https://rasa.com/docs/) 
   - [Setting up the Virtual Environment (Windows User)](#setting-up-the-virtual-environment-windows-user)
   - [Setting up the Virtual Environment (Mac User)](#setting-up-the-virtual-environment-mac-user)
 - [4. Rasa Action Server Usage](#4-rasa-action-server-usage)
-- [5. Deployment](#5-deployment)
+- [5. Deployment on Heroku](#5-deployment-on-heroku)
   - [Push changes to Heroku](#push-changes-to-heroku)
   - [Make requests to Rasa](#make-requests-to-rasa)
+- [6. Deployment on Azure](#6-deployment-on-azure)
+  - [Building the Docker image](#building-the-docker-image)
+  - [Setting up Azure environment](#setting-up-azure-environment)
+  - [Hosting on Azure](#hosting-on-azure)
+- [7. Deployment locally using ngrok](#7-deployment-locally-using-ngrok)
 
 ## 1. Tech Stack
 Here's a brief high-level overview of the tech stack:
@@ -125,7 +130,7 @@ To load the trained model and talk to the Rasa chatbot on the command line:
 rasa shell -m models
 ```
 
-## 5. Deployment
+## 5. Deployment on Heroku
 ### Push changes to Heroku
 Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
 Log in to Heroku using the Heroku CLI.
@@ -148,4 +153,70 @@ Once your server is deployed, you can make requests to your NLU model via [Rasa 
 For example:
 ```
 curl https://<your Heroku application name>.herokuapp.com/model/parse -d '{"text":"hello"}'
+```
+
+## 6. Deployment on Azure
+### Building the Docker image
+Install [Docker](https://docs.docker.com/engine/install/) and run:
+```bash
+docker build -t <imageID>
+```
+To run the Docker image locally:
+```bash
+docker run <imageID>
+```
+### Setting up Azure environment
+Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) and login to Azure:
+```
+az login
+```
+
+Setup the right subscription if required:
+```
+az account set --subscription <Subscription Name>
+```
+
+Create the resource group:
+```
+az group create --name rasaResourceGroup --location southeastasia
+```
+
+Create container registry:
+```
+az acr create --resource-group rasaResourceGroup --name rasaCR --sku Basic
+```
+> Make sure the container is unique, you can check [here](https://docs.microsoft.com/en-us/rest/api/containerregistry/registries/check-name-availability?tabs=HTTP#code-try-0)
+
+Log in to the container registry:
+```
+az acr login --name rasaCR
+```
+
+### Hosting on Azure
+- In the Azure dashboard, click on the container registry created and get the login server as shown in the image
+![Image](./images/1.png)
+Run the command: 
+```
+docker tag <imageID> <Login server>/<imageID>
+```
+
+- Push the Docker image onto Azure
+```
+docker push <Login server>/<imageID>
+```
+
+## 7. Deployment locally using ngrok
+Install ngrok using [Chocolatey](https://docs.chocolatey.org/en-us/choco/setup)
+```bash
+choco install ngrok
+```
+
+Connect your account
+```bash
+ngrok config add-authtoken <authtoken taken from dashboard.ngrok.com>
+```
+
+Start HTTP tunnel forwarding to local port 5005
+```bash
+ngrok http 5005
 ```
