@@ -125,11 +125,6 @@ Start the server with the trained model:
 rasa run actions
 ```
 
-To load the trained model and talk to the Rasa chatbot on the command line:
-```
-rasa shell -m models
-```
-
 ## 5. Deployment on Heroku
 ### Push changes to Heroku
 Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
