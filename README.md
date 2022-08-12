@@ -147,6 +147,9 @@ rasa run actions
 
 ## 5. Deployment on Heroku
 
+### Create a Heroku app using Heroku CLI
+https://devcenter.heroku.com/articles/creating-apps#creating-a-named-app
+
 ### Push changes to Heroku
 
 Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
